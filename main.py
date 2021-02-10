@@ -14,7 +14,7 @@ main_page_content = BeautifulSoup(response.text, 'html.parser')
 # print(main_page_content)
 
 
-topMovieHits = main_page_content.select(".titleColumn")
+topMovieHits = main_page_content.select(".movieTitle")
 print(topMovieHits) ## printing empty array
 
 
