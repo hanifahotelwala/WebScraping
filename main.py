@@ -44,7 +44,12 @@ def getstats(url, div):
     getContent = BeautifulSoup(getRequest.text, 'html.parser')
     selectContent = getContent.select(div)
     getGenre = getContent.select(".genre , .scoreboard__info")
-    genre = str(getGenre).split(",")[1]  # genre captured
+    # print(getGenre)
+    if not getGenre:
+        genre = " not found"
+    else:
+        genre = str(getGenre).split(",")[1]
+
     audienceScore = re.findall("audiencescore=\"(.*?)\"", str(selectContent))  # audience score captured
     tomatoScore = re.findall("tomatometerscore=\"(.*?)\"", str(selectContent))  # tomato score captured
     movieStats.append(genre)
@@ -71,6 +76,8 @@ def editmoviename(moviename):
         moviename = moviename.replace(".", "")
     if ":" in moviename:
         moviename = moviename.replace(":", "")
+    if "'" in moviename:
+        moviename = moviename.replace("'","")
     # movie names with a non-uniform url hardcoded.
     if moviename == "shutter_island":
         moviename = "1198124-" + moviename
@@ -80,6 +87,7 @@ def editmoviename(moviename):
         moviename = moviename + "_2020"
     if moviename == "365_days":
         moviename = moviename + "_2020"
+
     return moviename
 
 
@@ -89,10 +97,12 @@ def getmovienamesimdb(div, movieNamesArr, movieURLArr,year):
     retrieves top 10 popular movies of the following years: 2000, 2010, 2020
     :param moviename
     :return: moviename
+    TODO: PULL 50.
     """
     moviecounter = 0
+    datalist = []
     for movies in div:
-        if moviecounter < 10:
+        if moviecounter < 50:
             movies = movies.text
             movieNamesArr.append(movies)
 
@@ -107,16 +117,49 @@ def getmovienamesimdb(div, movieNamesArr, movieURLArr,year):
             print("{} :: Movie: {} Genre: {} Tomatoscore: {} AudenienceScore: {}".format(year,movieNamesArr[moviecounter],
                                                                                    moviestats[0], moviestats[1],
                                                                                    moviestats[2]))
+            data = "{} :: Movie: {} Genre: {} Tomatoscore: {} AudenienceScore: {}".format(year,movieNamesArr[moviecounter],
+                                                                                   moviestats[0], moviestats[1], moviestats[2])
+            datalist.append(data)
 
             tomatometerUrl = tomatometerUrlMain  # reset tomatometer Url
             moviecounter += 1
 
         else:
             break
-
-
+    return datalist # data in list.
 
 test = getmovienamesimdb(top00movieNames_div, movieNames_00, movieURL_00, "'00")
 test1 = getmovienamesimdb(top10movieNames_div, movieNames_10, movieURL_10, "'10")
 test2 = getmovienamesimdb(top20movieNames_div, movieNames_20, movieURL_20, "'20")
 
+# print(test[0])
+# print(type(test))
+
+
+def analyzegenredata(data):
+    genredict = {'Action':0, 'Horror':0, 'Drama':0, 'Romance':0, 'Comedy':0, 'Thriller':0, 'Not Found':0}
+
+    for x in data:
+        genrePattern = "Genre:(.*?)Tomatoscore"
+        substring = re.search(genrePattern,x).group(1).replace(" ","").lower()
+        if substring.find("action"):
+            genredict["Action"] += 1
+        if substring.find("horror"):
+            genredict["Horror"] += 1
+        if substring.find("drama"):
+            genredict["Drama"] += 1
+        if substring.find("romance"):
+            genredict["Romance"] += 1
+        if substring.find("comedy"):
+            genredict["Comedy"] += 1
+        if substring.find("thriller"):
+            genredict["Thriller"] += 1
+        if substring.find("not found"):
+            genredict["Not Found"] +=1
+
+    return genredict
+
+# print(analyzedata("Genre:  Comedy/Horror/Action Tomatoscore: ['70'] AudenienceScore: ['85']"))
+print("2000 Genres",analyzegenredata(test))
+print("2010 Genres",analyzegenredata(test1))
+print("2020 Genres",analyzegenredata(test2))
