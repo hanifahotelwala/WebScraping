@@ -195,17 +195,17 @@ def readlines(year, data):
 
     #compute averages
     avgTomatoScore["Horror"] = avgTomatoScore["Horror"] / genredict["Horror"]
-    avgAudienceScore["Horror"] = avgTomatoScore["Horror"] /genredict["Horror"]
+    avgAudienceScore["Horror"] = avgAudienceScore["Horror"] /genredict["Horror"]
     avgTomatoScore["Drama"] = avgTomatoScore["Drama"] / genredict["Drama"]
-    avgAudienceScore["Drama"] = avgTomatoScore["Drama"] / genredict["Drama"]
+    avgAudienceScore["Drama"] = avgAudienceScore["Drama"] / genredict["Drama"]
     avgTomatoScore["Action"] = avgTomatoScore["Action"] / genredict["Action"]
-    avgAudienceScore["Action"] = avgTomatoScore["Action"] / genredict["Action"]
+    avgAudienceScore["Action"] = avgAudienceScore["Action"] / genredict["Action"]
     avgTomatoScore["Romance"] = avgTomatoScore["Romance"] / genredict["Romance"]
-    avgAudienceScore["Romance"] = avgTomatoScore["Romance"] / genredict["Romance"]
+    avgAudienceScore["Romance"] = avgAudienceScore["Romance"] / genredict["Romance"]
     avgTomatoScore["Comedy"] = avgTomatoScore["Comedy"] / genredict["Comedy"]
-    avgAudienceScore["Comedy"] = avgTomatoScore["Comedy"] / genredict["Comedy"]
+    avgAudienceScore["Comedy"] = avgAudienceScore["Comedy"] / genredict["Comedy"]
     avgTomatoScore["Thriller"] = avgTomatoScore["Thriller"] / genredict["Thriller"]
-    avgAudienceScore["Thriller"] = avgTomatoScore["Thriller"] / genredict["Thriller"]
+    avgAudienceScore["Thriller"] = avgAudienceScore["Thriller"] / genredict["Thriller"]
 
 
     print year
